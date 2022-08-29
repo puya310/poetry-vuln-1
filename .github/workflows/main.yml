@@ -1,0 +1,21 @@
+name: SCA Check - GH Actions 
+on: push
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@master
+        
+      - name: mkdir for uploaded artifacts
+        run: mkdir downloads 
+        
+      - name: install/auth to Snyk 
+        run: 
+          npm install snyk -g 
+          npm install snyk-to-html -g
+          
+      - name: run Snyk
+        run: snyk test 
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
